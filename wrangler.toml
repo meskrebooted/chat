@@ -1,0 +1,12 @@
+name = "chat-worker"
+compatibility_date = "2025-11-18"
+type = "javascript"
+
+# Sostituisci ACCOUNT_ID con il tuo Cloudflare Account ID
+account_id = "REPLACE_WITH_YOUR_ACCOUNT_ID"
+
+# binding per la Durable Object
+[durable_objects]
+bindings = [
+  { name = "CHAT", class_name = "Chat" }
+]

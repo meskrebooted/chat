@@ -1,0 +1,10 @@
+{
+  "name": "chat-live",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "echo 'Front-end statico, apri index.html'",
+    "deploy:worker": "wrangler publish"
+  },
+  "devDependencies": {}
+}

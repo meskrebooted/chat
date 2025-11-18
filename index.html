@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chat Live</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="login" class="overlay">
+    <div class="card">
+      <h2>Benvenuto</h2>
+      <label>Inserisci il tuo nome</label>
+      <input id="nameInput" type="text" placeholder="Mario" />
+      <button id="joinBtn">Entra nella chat</button>
+    </div>
+  </div>
+
+  <div id="app" class="hidden">
+    <header>
+      <h1>Chat Live</h1>
+      <div id="status">disconnesso</div>
+    </header>
+
+    <main id="messages"></main>
+
+    <footer>
+      <input id="msgInput" placeholder="Scrivi un messaggio..." />
+      <button id="sendBtn">Invia</button>
+    </footer>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
