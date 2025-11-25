@@ -3,7 +3,7 @@ compatibility_date = "2025-11-18"
 type = "javascript"
 
 # Sostituisci ACCOUNT_ID con il tuo Cloudflare Account ID
-account_id = "REPLACE_WITH_YOUR_ACCOUNT_ID"
+account_id = "9550b47ba6536824d115a2bf42e6582b"
 
 # binding per la Durable Object
 [durable_objects]
