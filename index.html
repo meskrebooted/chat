@@ -15,6 +15,10 @@
       <button id="joinBtn">Entra nella chat</button>
     </div>
   </div>
+    <div id="onlineBox" class="onlinebox hidden">
+    <h3>👤 Online (<span id="onlineCount">0</span>)</h3>
+    <div id="onlineList"></div>
+  </div>
 
   <div id="app" class="hidden">
     <header>
@@ -32,19 +36,50 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic. com/firebasejs/9. 23.0/firebase-firestore.js";
+import { getDatabase, ref, set, onValue, onDisconnect, push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDsehS1NO34Upnzun6kbi1cbeAquf13Rm8",
-      authDomain: "chat-demo-mesk.firebaseapp.com",
-      projectId: "chat-demo-mesk",
-      storageBucket: "chat-demo-mesk.firebasestorage.app",
-      messagingSenderId: "1002055151122",
-      appId: "1:1002055151122:web:f5d290e279551e30f9f2cb"
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyDsehS1NO34Upnzun6kbi1cbeAquf13Rm8",
+  authDomain: "chat-demo-mesk.firebaseapp.com",
+  projectId: "chat-demo-mesk",
+  storageBucket: "chat-demo-mesk. firebasestorage.app",
+  messagingSenderId: "1002055151122",
+  appId: "1:1002055151122:web:f5d290e279551e30f9f2cb",
+  databaseURL: "https://chat-demo-mesk-default-rtdb.europe-west1.firebasedatabase.app/"
+};
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const rtdb = getDatabase(app);
+const onlineBox = document.getElementById('onlineBox');
+const onlineListEl = document.getElementById('onlineList');
+const onlineCountEl = document.getElementById('onlineCount');
+let myUserRef = null;
+
+function aggiungiUtente(nome) {
+  const usersRef = ref(rtdb, 'utentiOnline');
+  myUserRef = push(usersRef);
+  set(myUserRef, { nome: nome, timestamp: Date.now() });
+  onDisconnect(myUserRef).remove();
+}
+
+const usersRef = ref(rtdb, 'utentiOnline');
+onValue(usersRef, (snapshot) => {
+  onlineListEl.innerHTML = '';
+  const utenti = snapshot.val();
+  if (utenti) {
+    onlineCountEl.textContent = Object.keys(utenti).length;
+    Object.values(utenti).forEach(utente => {
+      const el = document.createElement('div');
+      el.className = 'online-user';
+      el.textContent = '🟢 ' + utente.nome;
+      onlineListEl. appendChild(el);
+    });
+  } else {
+    onlineCountEl.textContent = '0';
+  }
+});
 
     // Prendi elementi HTML
     const login = document. getElementById('login');
@@ -90,7 +125,9 @@ joinBtn.addEventListener('click', () => {
   if (!nome) return alert('Inserisci un nome');
   myName = nome;
   login.remove();                    // Cancella login
-  appEl.style.display = 'block';     // Mostra app (se era nascosto)
+  appEl.style.display = 'block';
+    onlineBox.style.display = 'block';
+  aggiungiUtente(myName);// Mostra app (se era nascosto)
 });
     // Quando clicchi "Invia"
     sendBtn.addEventListener('click', async () => {
