@@ -1,131 +1,82 @@
-:root {
-  --bg: #0f1720;
-  --card: #0b1220;
-  --accent: #06b6d4;
-  --text: #e6eef6;
-}
-
-* {
-  box-sizing: border-box;
-  font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial;
-}
-
-body {
-  margin: 0;
-  background: linear-gradient(180deg, #071023 0%, #071a2a 100%);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 0;
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-#messages {
-  width: 100%;
-  max-width: 800px;
-  height: 60vh;
-  overflow: auto;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 8px;
-  padding: 12px;
-  margin: 0 auto 12px;
-}
-
-.message {
-  padding: 8px 10px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.message . meta {
-  font-size: 12px;
-  color: #9fb6c6;
-  margin-bottom: 6px;
-}
-
-footer {
-  display: flex;
-  gap: 8px;
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-footer input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: transparent;
-  color: var(--text);
-}
-
-footer button {
-  padding: 10px 14px;
-  border-radius: 6px;
-  background: var(--accent);
-  border: none;
-  color: #012;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-. overlay {
+. name-box {
   position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card {
+  top: 20px;
+  right: 20px;
   background: var(--card);
-  padding: 24px;
+  padding: 16px;
   border-radius: 8px;
-  width: 320px;
-  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
-  text-align: center;
+  width: 220px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
 }
 
-.card label {
-  display: block;
+.name-box h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.name-box input {
+  width: 100%;
+  padding: 8px;
   margin-bottom: 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
   font-size: 14px;
 }
 
-.card input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 16px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: transparent;
-  color: var(--text);
+.name-box input:disabled {
+  opacity: 0. 5;
+  cursor: not-allowed;
 }
 
-. card button {
+.name-box button {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   border-radius: 6px;
   background: var(--accent);
   border: none;
   color: #012;
   cursor: pointer;
   font-weight: 600;
+  font-size: 14px;
 }
 
-#status {
+.name-box button:disabled {
+  opacity: 0. 5;
+  cursor: not-allowed;
+}
+
+.name-display {
+  display: none;
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(6, 182, 212, 0.1);
+  border-radius: 6px;
+  color: var(--accent);
   font-size: 13px;
-  color: #9fb6c6;
+  text-align: center;
+  font-weight: 600;
+}
+
+#app {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-right: 260px;
+}
+
+@media (max-width: 768px) {
+  #app {
+    padding-right: 0;
+  }
+  
+  .name-box {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin: 0 auto 20px;
+  }
 }
