@@ -58,22 +58,30 @@
     let myName = '';
 
     // Funzione per mostrare un messaggio
-    function mostraMessaggio(autore, testo, orario) {
-      const el = document.createElement('div');
-      el.className = 'message';
-      
-      const meta = document.createElement('div');
-      meta.className = 'meta';
-      meta.textContent = `${autore} ${orario ? '• ' + new Date(orario). toLocaleTimeString() : ''}`;
-      
-      const body = document.createElement('div');
-      body.textContent = testo;
-      
-      el.appendChild(meta);
-      el.appendChild(body);
-      messagesEl.appendChild(el);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-    }
+function mostraMessaggio(autore, testo, orario) {
+  const el = document.createElement('div');
+  el.className = 'message';
+  
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  
+  if (orario) {
+    const data = new Date(orario);
+    const giorno = data.toLocaleDateString('it-IT'); // dd/mm/yyyy
+    const ora = data.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }); // hh:mm
+    meta.textContent = `${autore} • ${giorno} ${ora}`;
+  } else {
+    meta.textContent = autore;
+  }
+  
+  const body = document.createElement('div');
+  body.textContent = testo;
+  
+  el.appendChild(meta);
+  el.appendChild(body);
+  messagesEl.appendChild(el);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
 
 
 // Quando clicchi "Entra"
