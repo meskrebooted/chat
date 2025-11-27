@@ -29,7 +29,26 @@
       <button id="sendBtn">Invia</button>
     </footer>
   </div>
+  
+  <script> 
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDsehS1NO34Upnzun6kbi1cbeAquf13Rm8",
+  authDomain: "chat-demo-mesk.firebaseapp.com",
+  projectId: "chat-demo-mesk",
+  storageBucket: "chat-demo-mesk.firebasestorage.app",
+  messagingSenderId: "1002055151122",
+  appId: "1:1002055151122:web:f5d290e279551e30f9f2cb"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+  </script>
   <script src="main.js"></script>
 </body>
 </html>
