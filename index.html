@@ -46,14 +46,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const login = document. getElementById('login');
-    const joinBtn = document.getElementById('joinBtn');
-    const nameInput = document.getElementById('nameInput');
-    const appEl = document.getElementById('app');
-    const messagesEl = document.getElementById('messages');
-    const msgInput = document.getElementById('msgInput');
-    const sendBtn = document.getElementById('sendBtn');
-
     let myName = '';
 
     function mostraMessaggio(autore, testo, orario) {
@@ -69,20 +61,20 @@
       
       el.appendChild(meta);
       el.appendChild(body);
-      messagesEl.appendChild(el);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+      document.getElementById('messages').appendChild(el);
+      document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
     }
 
-    joinBtn.addEventListener('click', () => {
-      const nome = nameInput.value. trim();
-      if (! nome) return alert('Inserisci un nome');
+    document.getElementById('joinBtn').addEventListener('click', () => {
+      const nome = document.getElementById('nameInput').value.trim();
+      if (!nome) return alert('Inserisci un nome');
       myName = nome;
-      login.style.display = 'none';
-      appEl.style.display = 'block';
+      document. getElementById('login').style.display = 'none';
+      document. getElementById('app').style.display = 'block';
     });
 
-    sendBtn.addEventListener('click', async () => {
-      const testo = msgInput.value.trim();
+    document.getElementById('sendBtn'). addEventListener('click', async () => {
+      const testo = document. getElementById('msgInput').value.trim();
       if (!testo) return;
       
       try {
@@ -91,24 +83,24 @@
           testo: testo,
           orario: serverTimestamp()
         });
-        msgInput.value = '';
+        document. getElementById('msgInput').value = '';
       } catch (errore) {
         console.error('Errore:', errore);
         alert('Errore invio messaggio');
       }
     });
 
-    msgInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') sendBtn.click();
+    document.getElementById('msgInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('sendBtn').click();
     });
 
     const q = query(collection(db, 'messaggi'), orderBy('orario', 'asc'));
     onSnapshot(q, (snapshot) => {
-      messagesEl.innerHTML = '';
+      document.getElementById('messages').innerHTML = '';
       snapshot.forEach(doc => {
-        const dati = doc. data();
-        const ts = dati.orario ? dati. orario.toDate().getTime() : Date.now();
-        mostraMessaggio(dati. autore, dati.testo, ts);
+        const dati = doc.data();
+        const ts = dati. orario ? dati.orario.toDate().getTime() : Date.now();
+        mostraMessaggio(dati.autore, dati.testo, ts);
       });
     });
   </script>
