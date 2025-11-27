@@ -31,7 +31,7 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic. com/firebasejs/9. 23.0/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic. com/firebasejs/9. 23.0/firebase-app. js";
     import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -60,12 +60,12 @@
       const el = document.createElement('div');
       el.className = 'message';
       
-      const meta = document.createElement('div');
-      meta.className = 'meta';
+      const meta = document. createElement('div');
+      meta. className = 'meta';
       meta.textContent = `${autore} ${orario ?  '• ' + new Date(orario).toLocaleTimeString() : ''}`;
       
-      const body = document. createElement('div');
-      body. textContent = testo;
+      const body = document.createElement('div');
+      body.textContent = testo;
       
       el.appendChild(meta);
       el.appendChild(body);
@@ -74,7 +74,7 @@
     }
 
     joinBtn.addEventListener('click', () => {
-      const nome = nameInput.value.trim();
+      const nome = nameInput.value. trim();
       if (! nome) return alert('Inserisci un nome');
       myName = nome;
       login.style.display = 'none';
@@ -106,9 +106,9 @@
     onSnapshot(q, (snapshot) => {
       messagesEl.innerHTML = '';
       snapshot.forEach(doc => {
-        const dati = doc.data();
-        const ts = dati.orario ? dati.orario.toDate(). getTime() : Date.now();
-        mostraMessaggio(dati.autore, dati.testo, ts);
+        const dati = doc. data();
+        const ts = dati.orario ? dati. orario.toDate().getTime() : Date.now();
+        mostraMessaggio(dati. autore, dati.testo, ts);
       });
     });
   </script>
