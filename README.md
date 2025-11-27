@@ -1,3 +1,3 @@
 ```markdown
-Chat che ho fatto menando copilot
+Chat che ho fatto menando copilot 😎😠🤏👶🐥🌶️♠️⛏️⚒️🪧🤪🔸🔹
 ```
