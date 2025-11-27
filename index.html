@@ -43,10 +43,10 @@ const firebaseConfig = {
   apiKey: "AIzaSyDsehS1NO34Upnzun6kbi1cbeAquf13Rm8",
   authDomain: "chat-demo-mesk.firebaseapp.com",
   projectId: "chat-demo-mesk",
-  storageBucket: "chat-demo-mesk. firebasestorage.app",
+storageBucket: "chat-demo-mesk.firebasestorage.app",
   messagingSenderId: "1002055151122",
   appId: "1:1002055151122:web:f5d290e279551e30f9f2cb",
-  databaseURL: "https://chat-demo-mesk-default-rtdb.europe-west1.firebasedatabase.app/"
+databaseURL: "https://chat-demo-mesk-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
     const app = initializeApp(firebaseConfig);
@@ -74,7 +74,7 @@ onValue(usersRef, (snapshot) => {
       const el = document.createElement('div');
       el.className = 'online-user';
       el.textContent = '🟢 ' + utente.nome;
-      onlineListEl. appendChild(el);
+onlineListEl.appendChild(el);
     });
   } else {
     onlineCountEl.textContent = '0';
@@ -82,7 +82,7 @@ onValue(usersRef, (snapshot) => {
 });
 
     // Prendi elementi HTML
-    const login = document. getElementById('login');
+    const login = document.getElementById('login');
     const joinBtn = document.getElementById('joinBtn');
     const nameInput = document.getElementById('nameInput');
     const appEl = document.getElementById('app');
