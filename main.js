@@ -1,5 +1,5 @@
 // Prendi elementi HTML
-const login = document.getElementById('login');
+const login = document. getElementById('login');
 const joinBtn = document.getElementById('joinBtn');
 const nameInput = document.getElementById('nameInput');
 const app = document.getElementById('app');
@@ -19,10 +19,10 @@ function mostraMessaggio(autore, testo, orario) {
   
   const meta = document.createElement('div');
   meta.className = 'meta';
-  meta. textContent = `${autore} ${orario ? '• ' + new Date(orario).toLocaleTimeString() : ''}`;
+  meta.textContent = `${autore} ${orario ? '• ' + new Date(orario).toLocaleTimeString() : ''}`;
   
-  const body = document. createElement('div');
-  body. textContent = testo;
+  const body = document.createElement('div');
+  body.textContent = testo;
   
   el.appendChild(meta);
   el.appendChild(body);
@@ -35,13 +35,13 @@ joinBtn.addEventListener('click', () => {
   const nome = nameInput.value.trim();
   if (!nome) return alert('Inserisci un nome');
   myName = nome;
-  login.classList.add('hidden');
+  login. classList.add('hidden');
   app.classList.remove('hidden');
 });
 
 // Quando clicchi "Invia"
 sendBtn.addEventListener('click', async () => {
-  const testo = msgInput.value. trim();
+  const testo = msgInput.value.trim();
   if (!testo) return;
   
   try {
@@ -69,7 +69,7 @@ onSnapshot(q, (snapshot) => {
   messagesEl.innerHTML = ''; // Pulisci
   snapshot.forEach(doc => {
     const dati = doc.data();
-    const ts = dati.orario ? dati.orario.toDate(). getTime() : Date.now();
-    mostraMessaggio(dati.autore, dati. testo, ts);
+    const ts = dati.orario ? dati.orario.toDate().getTime() : Date.now();
+    mostraMessaggio(dati.autore, dati.testo, ts);
   });
 });
