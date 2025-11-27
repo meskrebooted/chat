@@ -1,35 +1,35 @@
 <! doctype html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Chat Live</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style. css">
 </head>
 <body>
-  <div id="nameBox" class="name-box">
+  <div id="nameBox" class="namebox">
     <h3>Il tuo nome</h3>
-    <input id="nameInput" type="text" placeholder="Mario" />
+    <input id="nameInput" type="text" placeholder="Mario">
     <button id="joinBtn">Conferma</button>
-    <p id="nameDisplay" class="name-display"></p>
+    <p id="nameDisplay" class="namedisplay"></p>
   </div>
 
-  <div id="app">
+  <div id="app" class="app">
     <header>
       <h1>Chat Live</h1>
       <div id="status">connesso</div>
     </header>
 
-    <main id="messages"></main>
+    <main id="messages" class="messages"></main>
 
     <footer>
-      <input id="msgInput" placeholder="Scrivi un messaggio..." />
+      <input id="msgInput" type="text" placeholder="Scrivi un messaggio...">
       <button id="sendBtn">Invia</button>
     </footer>
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic. com/firebasejs/9. 23.0/firebase-app. js";
+    import { initializeApp } from "https://www.gstatic. com/firebasejs/9. 23.0/firebase-app.js";
     import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -60,7 +60,7 @@
       
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.textContent = `${autore} ${orario ? '• ' + new Date(orario). toLocaleTimeString() : ''}`;
+      meta. textContent = autore + (orario ? ' • ' + new Date(orario).toLocaleTimeString() : '');
       
       const body = document.createElement('div');
       body.textContent = testo;
@@ -73,19 +73,24 @@
 
     joinBtn.addEventListener('click', () => {
       const nome = nameInput.value.trim();
-      if (!nome) return alert('Inserisci un nome');
+      if (! nome) {
+        alert('Inserisci un nome');
+        return;
+      }
       
       myName = nome;
       nameConfirmed = true;
       
       nameInput.disabled = true;
       joinBtn.disabled = true;
-      nameDisplay.textContent = `✓ ${myName}`;
+      nameDisplay.textContent = '✓ ' + myName;
       nameDisplay.style.display = 'block';
     });
 
     nameInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && ! nameConfirmed) joinBtn.click();
+      if (e.key === 'Enter' && !nameConfirmed) {
+        joinBtn.click();
+      }
     });
 
     sendBtn.addEventListener('click', async () => {
@@ -95,8 +100,8 @@
         return;
       }
 
-      const testo = msgInput. value.trim();
-      if (! testo) return;
+      const testo = msgInput.value.trim();
+      if (!testo) return;
       
       try {
         await addDoc(collection(db, 'messaggi'), {
@@ -112,7 +117,9 @@
     });
 
     msgInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') sendBtn.click();
+      if (e.key === 'Enter') {
+        sendBtn.click();
+      }
     });
 
     const q = query(collection(db, 'messaggi'), orderBy('orario', 'asc'));
@@ -120,7 +127,7 @@
       messagesEl.innerHTML = '';
       snapshot.forEach(doc => {
         const dati = doc.data();
-        const ts = dati. orario ? dati.orario.toDate().getTime() : Date.now();
+        const ts = dati.orario ? dati.orario.toDate(). getTime() : Date.now();
         mostraMessaggio(dati.autore, dati.testo, ts);
       });
     });
