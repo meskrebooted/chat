@@ -75,15 +75,15 @@
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    // Quando clicchi "Entra"
-    joinBtn.addEventListener('click', () => {
-      const nome = nameInput.value.trim();
-      if (!nome) return alert('Inserisci un nome');
-      myName = nome;
-      login. classList.add('hidden');
-      appEl.classList.remove('hidden');
-    });
 
+// Quando clicchi "Entra"
+joinBtn.addEventListener('click', () => {
+  const nome = nameInput.value.trim();
+  if (!nome) return alert('Inserisci un nome');
+  myName = nome;
+  login.remove();                    // Cancella login
+  appEl.style.display = 'block';     // Mostra app (se era nascosto)
+});
     // Quando clicchi "Invia"
     sendBtn.addEventListener('click', async () => {
       const testo = msgInput.value.trim();
