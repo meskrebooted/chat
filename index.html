@@ -1,4 +1,4 @@
-<!doctype html>
+<! doctype html>
 <html lang="it">
 <head>
   <meta charset="utf-8" />
@@ -19,7 +19,7 @@
   <div id="app" class="hidden">
     <header>
       <h1>Chat Live</h1>
-      <div id="status">disconnesso</div>
+      <div id="status">connesso</div>
     </header>
 
     <main id="messages"></main>
@@ -29,28 +29,25 @@
       <button id="sendBtn">Invia</button>
     </footer>
   </div>
-  
-<script type="module">
-  import { initializeApp } from "https://www.gstatic. com/firebasejs/9. 23.0/firebase-app. js";
-  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDsehS1NO34Upnzun6kbi1cbeAquf13Rm8",
-    authDomain: "chat-demo-mesk.firebaseapp.com",
-    projectId: "chat-demo-mesk",
-    storageBucket: "chat-demo-mesk.firebasestorage.app",
-    messagingSenderId: "1002055151122",
-    appId: "1:1002055151122:web:f5d290e279551e30f9f2cb"
-  };
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsehS1NO34Upnzun6kbi1cbeAquf13Rm8",
+      authDomain: "chat-demo-mesk.firebaseapp.com",
+      projectId: "chat-demo-mesk",
+      storageBucket: "chat-demo-mesk.firebasestorage.app",
+      messagingSenderId: "1002055151122",
+      appId: "1:1002055151122:web:f5d290e279551e30f9f2cb"
+    };
 
-  // ASPETTA che la pagina sia caricata
-  document.addEventListener('DOMContentLoaded', () => {
-    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     // Prendi elementi HTML
-    const login = document.getElementById('login');
+    const login = document. getElementById('login');
     const joinBtn = document.getElementById('joinBtn');
     const nameInput = document.getElementById('nameInput');
     const appEl = document.getElementById('app');
@@ -93,7 +90,6 @@
       if (!testo) return;
       
       try {
-        // Salva il messaggio su Firebase
         await addDoc(collection(db, 'messaggi'), {
           autore: myName,
           testo: testo,
@@ -107,22 +103,20 @@
     });
 
     // Invio con tasto Enter
-    msgInput. addEventListener('keydown', (e) => {
-      if (e. key === 'Enter') sendBtn.click();
+    msgInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendBtn.click();
     });
 
     // Ascolta i messaggi in tempo reale
     const q = query(collection(db, 'messaggi'), orderBy('orario', 'asc'));
     onSnapshot(q, (snapshot) => {
-      messagesEl. innerHTML = ''; // Pulisci
+      messagesEl.innerHTML = '';
       snapshot.forEach(doc => {
         const dati = doc.data();
-        const ts = dati.orario ? dati.orario.toDate(). getTime() : Date.now();
-        mostraMessaggio(dati.autore, dati. testo, ts);
+        const ts = dati.orario ? dati.orario.toDate().getTime() : Date.now();
+        mostraMessaggio(dati.autore, dati.testo, ts);
       });
     });
-
-  }); // Fine DOMContentLoaded
-</script>
+  </script>
 </body>
 </html>
