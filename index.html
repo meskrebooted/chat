@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <div id="app" class="hidden">
+  <div id="app" style="display:none">
     <header>
       <h1>Chat Live</h1>
       <div id="status">connesso</div>
@@ -31,7 +31,7 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic. com/firebasejs/9. 23.0/firebase-app.js";
     import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -46,7 +46,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Prendi elementi HTML
     const login = document. getElementById('login');
     const joinBtn = document.getElementById('joinBtn');
     const nameInput = document.getElementById('nameInput');
@@ -57,17 +56,16 @@
 
     let myName = '';
 
-    // Funzione per mostrare un messaggio
     function mostraMessaggio(autore, testo, orario) {
       const el = document.createElement('div');
       el.className = 'message';
       
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.textContent = `${autore} ${orario ? '• ' + new Date(orario). toLocaleTimeString() : ''}`;
+      meta.textContent = `${autore} ${orario ?  '• ' + new Date(orario).toLocaleTimeString() : ''}`;
       
-      const body = document.createElement('div');
-      body.textContent = testo;
+      const body = document. createElement('div');
+      body. textContent = testo;
       
       el.appendChild(meta);
       el.appendChild(body);
@@ -75,16 +73,14 @@
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    // Quando clicchi "Entra"
     joinBtn.addEventListener('click', () => {
       const nome = nameInput.value.trim();
-      if (!nome) return alert('Inserisci un nome');
+      if (! nome) return alert('Inserisci un nome');
       myName = nome;
-      login. classList.add('hidden');
-      appEl.classList.remove('hidden');
+      login.style.display = 'none';
+      appEl.style.display = 'block';
     });
 
-    // Quando clicchi "Invia"
     sendBtn.addEventListener('click', async () => {
       const testo = msgInput.value.trim();
       if (!testo) return;
@@ -102,18 +98,16 @@
       }
     });
 
-    // Invio con tasto Enter
     msgInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') sendBtn.click();
     });
 
-    // Ascolta i messaggi in tempo reale
     const q = query(collection(db, 'messaggi'), orderBy('orario', 'asc'));
     onSnapshot(q, (snapshot) => {
       messagesEl.innerHTML = '';
       snapshot.forEach(doc => {
         const dati = doc.data();
-        const ts = dati.orario ? dati.orario.toDate().getTime() : Date.now();
+        const ts = dati.orario ? dati.orario.toDate(). getTime() : Date.now();
         mostraMessaggio(dati.autore, dati.testo, ts);
       });
     });
