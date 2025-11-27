@@ -1,24 +1,19 @@
 <! doctype html>
 <html lang="it">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chat Live</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="login" class="overlay">
     <div class="card">
       <h2>Benvenuto</h2>
       <label>Inserisci il tuo nome</label>
-      <input id="nameInput" type="text" placeholder="Mario">
+      <input id="nameInput" type="text" placeholder="Mario" />
       <button id="joinBtn">Entra nella chat</button>
     </div>
-  </div>
-
-  <div id="onlineBox" class="onlinebox hidden">
-    <h3>👤 Online (<span id="onlineCount">0</span>)</h3>
-    <div id="onlineList"></div>
   </div>
 
   <div id="app" class="hidden">
@@ -30,112 +25,75 @@
     <main id="messages"></main>
 
     <footer>
-      <input id="msgInput" placeholder="Scrivi un messaggio...">
+      <input id="msgInput" placeholder="Scrivi un messaggio..." />
       <button id="sendBtn">Invia</button>
     </footer>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic. com/firebasejs/9. 23.0/firebase-firestore.js";
-    import { getDatabase, ref, set, onValue, onDisconnect, push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDsehS1NO34Upnzun6kbi1cbeAquf13Rm8",
       authDomain: "chat-demo-mesk.firebaseapp.com",
       projectId: "chat-demo-mesk",
-      storageBucket: "chat-demo-mesk. firebasestorage.app",
+      storageBucket: "chat-demo-mesk.firebasestorage.app",
       messagingSenderId: "1002055151122",
-      appId: "1:1002055151122:web:f5d290e279551e30f9f2cb",
-      databaseURL: "https://chat-demo-mesk-default-rtdb.europe-west1.firebasedatabase.app/"
+      appId: "1:1002055151122:web:f5d290e279551e30f9f2cb"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const rtdb = getDatabase(app);
 
-    const login = document.getElementById('login');
-    const joinBtn = document. getElementById('joinBtn');
+    // Prendi elementi HTML
+    const login = document. getElementById('login');
+    const joinBtn = document.getElementById('joinBtn');
     const nameInput = document.getElementById('nameInput');
     const appEl = document.getElementById('app');
     const messagesEl = document.getElementById('messages');
     const msgInput = document.getElementById('msgInput');
-    const sendBtn = document. getElementById('sendBtn');
-    const onlineBox = document. getElementById('onlineBox');
-    const onlineListEl = document. getElementById('onlineList');
-    const onlineCountEl = document. getElementById('onlineCount');
+    const sendBtn = document.getElementById('sendBtn');
 
     let myName = '';
-    let myUserRef = null;
 
-    function aggiungiUtente(nome) {
-      const usersRef = ref(rtdb, 'utentiOnline');
-      myUserRef = push(usersRef);
-      
-      set(myUserRef, {
-        nome: nome,
-        timestamp: Date. now()
-      });
-      
-      onDisconnect(myUserRef).remove();
-    }
+    // Funzione per mostrare un messaggio
+function mostraMessaggio(autore, testo, orario) {
+  const el = document.createElement('div');
+  el.className = 'message';
+  
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  
+  if (orario) {
+    const data = new Date(orario);
+    const giorno = data.toLocaleDateString('it-IT'); // dd/mm/yyyy
+    const ora = data.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }); // hh:mm
+    meta.textContent = `${autore} • ${giorno} ${ora}`;
+  } else {
+    meta.textContent = autore;
+  }
+  
+  const body = document.createElement('div');
+  body.textContent = testo;
+  
+  el.appendChild(meta);
+  el.appendChild(body);
+  messagesEl.appendChild(el);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
 
-    const usersRef = ref(rtdb, 'utentiOnline');
-    onValue(usersRef, (snapshot) => {
-      onlineListEl. innerHTML = '';
-      const utenti = snapshot.val();
-      
-      if (utenti) {
-        const numUtenti = Object. keys(utenti).length;
-        onlineCountEl.textContent = numUtenti;
-        
-        Object. values(utenti).forEach(utente => {
-          const el = document.createElement('div');
-          el.className = 'online-user';
-          el.textContent = '🟢 ' + utente.nome;
-          onlineListEl.appendChild(el);
-        });
-      } else {
-        onlineCountEl.textContent = '0';
-      }
-    });
 
-    function mostraMessaggio(autore, testo, orario) {
-      const el = document.createElement('div');
-      el.className = 'message';
-      
-      const meta = document.createElement('div');
-      meta.className = 'meta';
-      
-      if (orario) {
-        const data = new Date(orario);
-        const giorno = data. toLocaleDateString('it-IT');
-        const ora = data. toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-        meta.textContent = `${autore} • ${giorno} ${ora}`;
-      } else {
-        meta. textContent = autore;
-      }
-      
-      const body = document.createElement('div');
-      body.textContent = testo;
-      
-      el.appendChild(meta);
-      el.appendChild(body);
-      messagesEl. appendChild(el);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-    }
-
-    joinBtn.addEventListener('click', () => {
-      const nome = nameInput.value.trim();
-      if (! nome) return alert('Inserisci un nome');
-      myName = nome;
-      login.remove();
-      appEl.style. display = 'block';
-      onlineBox.style.display = 'block';
-      aggiungiUtente(myName);
-    });
-
-    sendBtn. addEventListener('click', async () => {
+// Quando clicchi "Entra"
+joinBtn.addEventListener('click', () => {
+  const nome = nameInput.value.trim();
+  if (!nome) return alert('Inserisci un nome');
+  myName = nome;
+  login.remove();                    // Cancella login
+  appEl.style.display = 'block';     // Mostra app (se era nascosto)
+});
+    // Quando clicchi "Invia"
+    sendBtn.addEventListener('click', async () => {
       const testo = msgInput.value.trim();
       if (!testo) return;
       
@@ -152,16 +110,18 @@
       }
     });
 
+    // Invio con tasto Enter
     msgInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') sendBtn.click();
     });
 
+    // Ascolta i messaggi in tempo reale
     const q = query(collection(db, 'messaggi'), orderBy('orario', 'asc'));
     onSnapshot(q, (snapshot) => {
       messagesEl.innerHTML = '';
       snapshot.forEach(doc => {
         const dati = doc.data();
-        const ts = dati. orario ? dati.orario.toDate().getTime() : Date.now();
+        const ts = dati.orario ? dati.orario.toDate().getTime() : Date.now();
         mostraMessaggio(dati.autore, dati.testo, ts);
       });
     });
