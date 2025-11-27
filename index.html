@@ -1,30 +1,36 @@
-<! doctype html>
+<! DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Chat Live - Login</title>
-  <link rel="stylesheet" href="style. css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="overlay">
     <div class="card">
       <h2>Benvenuto</h2>
       <label>Inserisci il tuo nome</label>
-      <input id="nameInput" type="text" placeholder="Mario" />
+      <input id="nameInput" type="text" placeholder="Mario">
       <button id="joinBtn">Entra nella chat</button>
     </div>
   </div>
 
   <script>
-    document.getElementById('joinBtn').addEventListener('click', () => {
-      const nome = document.getElementById('nameInput').value.trim();
-      if (!nome) return alert('Inserisci un nome');
+    const nameInput = document.getElementById('nameInput');
+    const joinBtn = document.getElementById('joinBtn');
+
+    joinBtn.addEventListener('click', () => {
+      const nome = nameInput.value.trim();
+      if (!nome) {
+        alert('Inserisci un nome');
+        return;
+      }
       window.location. href = 'chat.html? nome=' + encodeURIComponent(nome);
     });
-    
-    document.getElementById('nameInput').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') document.getElementById('joinBtn').click();
+
+    nameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') joinBtn.click();
     });
   </script>
 </body>
