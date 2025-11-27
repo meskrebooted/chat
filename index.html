@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chat Live</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Chat Live - Login</title>
+  <link rel="stylesheet" href="style. css" />
 </head>
 <body>
-  <div id="login" class="overlay">
+  <div class="overlay">
     <div class="card">
       <h2>Benvenuto</h2>
       <label>Inserisci il tuo nome</label>
@@ -16,92 +16,15 @@
     </div>
   </div>
 
-  <div id="app" style="display:none">
-    <header>
-      <h1>Chat Live</h1>
-      <div id="status">connesso</div>
-    </header>
-
-    <main id="messages"></main>
-
-    <footer>
-      <input id="msgInput" placeholder="Scrivi un messaggio..." />
-      <button id="sendBtn">Invia</button>
-    </footer>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic. com/firebasejs/9. 23.0/firebase-app. js";
-    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDsehS1NO34Upnzun6kbi1cbeAquf13Rm8",
-      authDomain: "chat-demo-mesk.firebaseapp.com",
-      projectId: "chat-demo-mesk",
-      storageBucket: "chat-demo-mesk.firebasestorage.app",
-      messagingSenderId: "1002055151122",
-      appId: "1:1002055151122:web:f5d290e279551e30f9f2cb"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    let myName = '';
-
-    function mostraMessaggio(autore, testo, orario) {
-      const el = document.createElement('div');
-      el.className = 'message';
-      
-      const meta = document. createElement('div');
-      meta. className = 'meta';
-      meta.textContent = `${autore} ${orario ?  '• ' + new Date(orario).toLocaleTimeString() : ''}`;
-      
-      const body = document.createElement('div');
-      body.textContent = testo;
-      
-      el.appendChild(meta);
-      el.appendChild(body);
-      document.getElementById('messages').appendChild(el);
-      document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-    }
-
+  <script>
     document.getElementById('joinBtn').addEventListener('click', () => {
       const nome = document.getElementById('nameInput').value.trim();
       if (!nome) return alert('Inserisci un nome');
-      myName = nome;
-      document. getElementById('login').style.display = 'none';
-      document. getElementById('app').style.display = 'block';
+      window.location. href = 'chat.html? nome=' + encodeURIComponent(nome);
     });
-
-    document.getElementById('sendBtn'). addEventListener('click', async () => {
-      const testo = document. getElementById('msgInput').value.trim();
-      if (!testo) return;
-      
-      try {
-        await addDoc(collection(db, 'messaggi'), {
-          autore: myName,
-          testo: testo,
-          orario: serverTimestamp()
-        });
-        document. getElementById('msgInput').value = '';
-      } catch (errore) {
-        console.error('Errore:', errore);
-        alert('Errore invio messaggio');
-      }
-    });
-
-    document.getElementById('msgInput').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') document.getElementById('sendBtn').click();
-    });
-
-    const q = query(collection(db, 'messaggi'), orderBy('orario', 'asc'));
-    onSnapshot(q, (snapshot) => {
-      document.getElementById('messages').innerHTML = '';
-      snapshot.forEach(doc => {
-        const dati = doc.data();
-        const ts = dati. orario ? dati.orario.toDate().getTime() : Date.now();
-        mostraMessaggio(dati.autore, dati.testo, ts);
-      });
+    
+    document.getElementById('nameInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('joinBtn').click();
     });
   </script>
 </body>
