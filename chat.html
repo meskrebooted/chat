@@ -1,31 +1,31 @@
-<!doctype html>
+<! DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Chat Live</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <h1>Chat Live</h1>
-    <div id="status">connesso</div>
+    <div id="status"><span id="userName"></span> • connesso</div>
   </header>
 
   <main id="messages"></main>
 
   <footer>
-    <input id="msgInput" placeholder="Scrivi un messaggio..." />
+    <input id="msgInput" type="text" placeholder="Scrivi un messaggio...">
     <button id="sendBtn">Invia</button>
   </footer>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic. com/firebasejs/9. 23.0/firebase-app. js";
-    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore. js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyDsehS1NO34Upnzun6kbi1cbeAquf13Rm8",
-      authDomain: "chat-demo-mesk.firebaseapp.com",
+      authDomain: "chat-demo-mesk.firebaseapp. com",
       projectId: "chat-demo-mesk",
       storageBucket: "chat-demo-mesk.firebasestorage.app",
       messagingSenderId: "1002055151122",
@@ -36,9 +36,16 @@
     const db = getFirestore(app);
 
     const urlParams = new URLSearchParams(window.location.search);
-    const myName = urlParams.get('nome') || 'Anonimo';
+    const myName = urlParams. get('nome');
 
-    const messagesEl = document.getElementById('messages');
+    if (!myName) {
+      alert('Nome mancante!  Torna alla home.');
+      window.location.href = 'index.html';
+    }
+
+    document.getElementById('userName').textContent = myName;
+
+    const messagesEl = document. getElementById('messages');
     const msgInput = document.getElementById('msgInput');
     const sendBtn = document.getElementById('sendBtn');
 
@@ -48,7 +55,7 @@
       
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.textContent = `${autore} ${orario ?  '• ' + new Date(orario).toLocaleTimeString() : ''}`;
+      meta. textContent = autore + (orario ? ' • ' + new Date(orario).toLocaleTimeString() : '');
       
       const body = document.createElement('div');
       body.textContent = testo;
@@ -59,9 +66,9 @@
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    sendBtn.addEventListener('click', async () => {
-      const testo = msgInput. value.trim();
-      if (! testo) return;
+    async function inviaMessaggio() {
+      const testo = msgInput.value. trim();
+      if (!testo) return;
       
       try {
         await addDoc(collection(db, 'messaggi'), {
@@ -71,13 +78,14 @@
         });
         msgInput.value = '';
       } catch (errore) {
-        console.error('Errore:', errore);
-        alert('Errore invio messaggio');
+        console.error('Errore invio:', errore);
+        alert('Errore invio messaggio: ' + errore.message);
       }
-    });
+    }
 
+    sendBtn.addEventListener('click', inviaMessaggio);
     msgInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') sendBtn.click();
+      if (e.key === 'Enter') inviaMessaggio();
     });
 
     const q = query(collection(db, 'messaggi'), orderBy('orario', 'asc'));
@@ -88,6 +96,9 @@
         const ts = dati.orario ?  dati.orario.toDate().getTime() : Date.now();
         mostraMessaggio(dati.autore, dati.testo, ts);
       });
+    }, (errore) => {
+      console. error('Errore Firebase:', errore);
+      alert('Errore connessione Firebase: ' + errore.message);
     });
   </script>
 </body>
