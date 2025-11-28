@@ -95,31 +95,58 @@
 
   let myName = '';
 
-  // Mostra messaggio
-  function mostraMessaggio(autore, testo, orario) {
-    const el = document.createElement('div');
-    el.className = 'message';
+// Mostra messaggio con supporto immagini
+function mostraMessaggio(autore, testo, orario) {
+  const el = document.createElement('div');
+  el.className = 'message';
 
-    const meta = document.createElement('div');
-    meta.className = 'meta';
+  const meta = document.createElement('div');
+  meta.className = 'meta';
 
-    if (orario) {
-      const data = new Date(orario);
-      const giorno = data.toLocaleDateString('it-IT');
-      const ora = data.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-      meta.textContent = `${autore} • ${giorno} ${ora}`;
-    } else {
-      meta.textContent = autore;
-    }
-
-    const body = document.createElement('div');
-    body.textContent = testo;
-
-    el.appendChild(meta);
-    el.appendChild(body);
-    messagesEl.appendChild(el);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+  if (orario) {
+    const data = new Date(orario);
+    const giorno = data.toLocaleDateString('it-IT');
+    const ora = data.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    meta.textContent = `${autore} • ${giorno} ${ora}`;
+  } else {
+    meta.textContent = autore;
   }
+
+  const body = document.createElement('div');
+  body.className = 'body';
+
+  const testoPulito = testo.trim();
+  const regexImmagine = /^(https?:\/\/.*\.(jpg|jpeg|png|gif|webp|bmp))(\?.*)?$/i;
+
+  if (regexImmagine.test(testoPulito)) {
+    // Se è un link immagine → mostra <img>
+    const img = document.createElement('img');
+    img.src = testoPulito;
+    img.className = 'message-image';
+    img.alt = 'Immagine';
+    img.onerror = function () {
+      this.style.display = 'none';
+      body.textContent = testoPulito;
+    };
+    body.appendChild(img);
+  } else if (/^https?:\/\//i.test(testoPulito)) {
+    // Se è un link generico → mostra cliccabile
+    const link = document.createElement('a');
+    link.href = testoPulito;
+    link.textContent = testoPulito;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    body.appendChild(link);
+  } else {
+    // Testo normale
+    body.textContent = testoPulito;
+  }
+
+  el.appendChild(meta);
+  el.appendChild(body);
+  messagesEl.appendChild(el);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
 
   // Entra nella chat
   joinBtn.addEventListener('click', () => {
