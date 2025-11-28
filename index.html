@@ -95,50 +95,22 @@
 
   let myName = '';
 
-function mostraMessaggio(autore, testo, orario) {
-  const el = document.createElement('div');
-  el.className = 'message';
+  // Mostra messaggio
+  function mostraMessaggio(autore, testo, orario) {
+    const el = document.createElement('div');
+    el.className = 'message';
 
-  const meta = document.createElement('div');
-  meta.className = 'meta';
+    const meta = document.createElement('div');
+    meta.className = 'meta';
 
-  if (orario) {
-    const data = new Date(orario);
-    const giorno = data.toLocaleDateString('it-IT');
-    const ora = data.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-    meta.textContent = `${autore} • ${giorno} ${ora}`;
-  } else {
-    meta.textContent = autore;
-  }
-
-  const body = document.createElement('div');   // ✅ corretto
-
-  // Regex per rilevare link immagine
-  const regexImmagine = /^(https?:\/\/.*\.(jpg|jpeg|png|gif|webp|bmp))(\?.*)?$/i;
-  const testoPulito = testo.trim();
-
-  if (regexImmagine.test(testoPulito)) {
-    // È un'immagine → mostra <img>
-    const img = document.createElement('img');
-    img.src = testoPulito;
-    img.className = 'message-image';
-    img.alt = 'Immagine';
-    img.onerror = function () {
-      this.style.display = 'none';
-      body.textContent = testoPulito;
-    };
-    body.appendChild(img);
-  } else {
-    // È testo normale
-    body.textContent = testoPulito;
-  }
-
-  el.appendChild(meta);
-  el.appendChild(body);
-  messagesEl.appendChild(el);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-}
-
+    if (orario) {
+      const data = new Date(orario);
+      const giorno = data.toLocaleDateString('it-IT');
+      const ora = data.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+      meta.textContent = `${autore} • ${giorno} ${ora}`;
+    } else {
+      meta.textContent = autore;
+    }
 
     const body = document.createElement('div');
     body.textContent = testo;
@@ -197,6 +169,7 @@ function mostraMessaggio(autore, testo, orario) {
     });
   });
 </script>
+
 
 </body>
 </html>
